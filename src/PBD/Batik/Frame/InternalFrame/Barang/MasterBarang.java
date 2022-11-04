@@ -1,0 +1,716 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package PBD.Batik.Frame.InternalFrame.Barang;
+
+import PBD.Batik.Frame.Koneksi;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author akbar
+ */
+public class MasterBarang extends javax.swing.JInternalFrame {
+
+    /**
+     * Creates new form MasterPegawai
+     */
+    
+    Connection conn;
+    Statement cmd;
+    ResultSet rs;
+    DefaultTableModel tmBarang;
+    String SQL;
+    
+    Statement cmd1;
+    ResultSet rs1;
+    String SQL1;
+    
+    public MasterBarang() {        
+        initComponents();
+        
+        loadIDBarang();
+        
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+    }
+    
+    private void loadIDBarang(){
+        try {
+            conn = Koneksi.getKoneksi();
+            SQL = "SELECT * FROM barang";
+            cmd = conn.createStatement();
+            rs = cmd.executeQuery(SQL);
+            cbIDBarang.removeAllItems();
+            cbIDBarang.addItem("Pilih ID Barang");
+            while(rs.next()){
+                String cid = rs.getString("id_barang");
+                cbIDBarang.addItem(cid);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+    
+    private void showTabel() {
+        try {
+            conn = Koneksi.getKoneksi();
+            
+            cmd = conn.createStatement();
+            rs = cmd.executeQuery("SELECT * FROM barang ORDER BY id_barang ASC");
+            
+            //Setting kolom dari DefaultTableModel
+            tmBarang = new DefaultTableModel(new String[] {"ID_BARANG", "NAMA_BARANG", "HRG_POKOK", "HRG_JUAL", "STOK"},0);
+            
+            //Pindah isi dari result set ke dalam DefaultTableModel
+            if (rs.next()) {
+                do {                    
+                    tmBarang.addRow(new Object[] {rs.getString("ID_BARANG"), rs.getString("NAMA_BARANG"), 
+                        rs.getInt("HRG_POKOK"), rs.getInt("HRG_JUAL"), rs.getInt("STOK")});
+                } while (rs.next());
+                
+            } else {
+                System.out.println("Data tidak ada");
+            }
+            
+            tbBarang.setDefaultEditor(Object.class, null);
+            
+            tbBarang.setModel(tmBarang);
+            
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+    
+    private String cekBarang(int angka) {
+        String barang = null;
+        try {
+            switch(angka) {
+                case 1:
+                    cmd1 = conn.createStatement();
+                    rs1 = cmd1.executeQuery("SELECT nama_barang FROM barang WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "' ");
+                    if (rs1 == null) {
+
+                    } else {
+                        while(rs1.next()) {
+                            barang = rs1.getString("nama_barang");
+                        }
+                    }
+                break;
+                
+                case 2:
+                    cmd1 = conn.createStatement();
+                    rs1 = cmd1.executeQuery("SELECT hrg_pokok FROM barang WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "' ");
+                    if (rs1 == null) {
+
+                    } else {
+                        while(rs1.next()) {
+                            barang = rs1.getString("hrg_pokok");
+                        }
+                    }
+                break;
+                
+                case 3:
+                    cmd1 = conn.createStatement();
+                    rs1 = cmd1.executeQuery("SELECT hrg_jual FROM barang WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "' ");
+                    if (rs1 == null) {
+
+                    } else {
+                        while(rs1.next()) {
+                            barang = rs1.getString("hrg_jual");
+                        }
+                    }
+                break;
+                
+                case 4:
+                    cmd1 = conn.createStatement();
+                    rs1 = cmd1.executeQuery("SELECT stok FROM barang WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "' ");
+                    if (rs1 == null) {
+
+                    } else {
+                        while(rs1.next()) {
+                            barang = rs1.getString("stok");
+                        }
+                    }
+                break;
+            }
+            
+            
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return barang;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        labNamaBarang = new javax.swing.JLabel();
+        labHargaPokok = new javax.swing.JLabel();
+        labIDBarang = new javax.swing.JLabel();
+        labHargaJual = new javax.swing.JLabel();
+        labStok = new javax.swing.JLabel();
+        txNamaBarang = new javax.swing.JTextField();
+        txHargaPokok = new javax.swing.JTextField();
+        txHargaJual = new javax.swing.JTextField();
+        txStok = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        cbIDBarang = new javax.swing.JComboBox<>();
+        btnClear = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbBarang = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        btnClear1 = new javax.swing.JButton();
+        btnTambahData = new javax.swing.JButton();
+        labNamaBarang1 = new javax.swing.JLabel();
+        txNamaBarang1 = new javax.swing.JTextField();
+        labHargaPokok1 = new javax.swing.JLabel();
+        txHargaPokok1 = new javax.swing.JTextField();
+        labHargaJual1 = new javax.swing.JLabel();
+        txHargaJual1 = new javax.swing.JTextField();
+        labStok1 = new javax.swing.JLabel();
+        txStok1 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+
+        setBorder(null);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        jPanel1.setBackground(new java.awt.Color(38, 42, 65));
+
+        btnUpdate.setBackground(new java.awt.Color(255, 255, 0));
+        btnUpdate.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
+        btnDelete.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(0, 0, 0));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        labNamaBarang.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labNamaBarang.setForeground(new java.awt.Color(255, 255, 255));
+        labNamaBarang.setText("Nama Barang");
+
+        labHargaPokok.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labHargaPokok.setForeground(new java.awt.Color(255, 255, 255));
+        labHargaPokok.setText("Harga Pokok");
+
+        labIDBarang.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labIDBarang.setForeground(new java.awt.Color(255, 255, 255));
+        labIDBarang.setText("ID Barang");
+
+        labHargaJual.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labHargaJual.setForeground(new java.awt.Color(255, 255, 255));
+        labHargaJual.setText("Harga Jual");
+
+        labStok.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labStok.setForeground(new java.awt.Color(255, 255, 255));
+        labStok.setText("Stok");
+
+        txNamaBarang.setBackground(new java.awt.Color(255, 255, 255));
+        txNamaBarang.setForeground(new java.awt.Color(0, 0, 0));
+
+        txHargaPokok.setBackground(new java.awt.Color(255, 255, 255));
+        txHargaPokok.setForeground(new java.awt.Color(0, 0, 0));
+
+        txHargaJual.setBackground(new java.awt.Color(255, 255, 255));
+        txHargaJual.setForeground(new java.awt.Color(0, 0, 0));
+
+        txStok.setBackground(new java.awt.Color(255, 255, 255));
+        txStok.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel7.setFont(new java.awt.Font("Rockwell", 1, 36)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(246, 182, 112));
+        jLabel7.setText("Data Barang");
+
+        cbIDBarang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbIDBarangActionPerformed(evt);
+            }
+        });
+
+        btnClear.setBackground(new java.awt.Color(255, 0, 0));
+        btnClear.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        btnClear.setForeground(new java.awt.Color(0, 0, 0));
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addComponent(btnUpdate)
+                        .addGap(48, 48, 48)
+                        .addComponent(btnDelete)
+                        .addGap(47, 47, 47)
+                        .addComponent(btnClear))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labHargaPokok)
+                                .addGap(166, 166, 166)
+                                .addComponent(txHargaPokok, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labHargaJual)
+                                .addGap(182, 182, 182)
+                                .addComponent(txHargaJual, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labStok)
+                                .addGap(239, 239, 239)
+                                .addComponent(txStok, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labNamaBarang)
+                                    .addComponent(labIDBarang))
+                                .addGap(158, 158, 158)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txNamaBarang)
+                                    .addComponent(cbIDBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(378, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labIDBarang)
+                    .addComponent(cbIDBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(labNamaBarang))
+                    .addComponent(txNamaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(labHargaPokok))
+                    .addComponent(txHargaPokok, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(labHargaJual))
+                    .addComponent(txHargaJual, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(labStok))
+                    .addComponent(txStok, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnClear))
+                .addGap(192, 192, 192))
+        );
+
+        jTabbedPane1.addTab("Master", jPanel1);
+
+        tbBarang.setBackground(new java.awt.Color(38, 42, 65));
+        tbBarang.setForeground(new java.awt.Color(255, 255, 255));
+        tbBarang.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID Barang", "Nama Barang", "Harga Pokok", "Harga Jual", "Stok"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbBarang.setGridColor(new java.awt.Color(255, 255, 255));
+        tbBarang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbBarangMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbBarang);
+
+        jTabbedPane1.addTab("Tabel", jScrollPane2);
+
+        jPanel2.setBackground(new java.awt.Color(38, 42, 65));
+
+        btnClear1.setBackground(new java.awt.Color(255, 0, 0));
+        btnClear1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        btnClear1.setForeground(new java.awt.Color(0, 0, 0));
+        btnClear1.setText("Clear");
+        btnClear1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClear1ActionPerformed(evt);
+            }
+        });
+
+        btnTambahData.setBackground(new java.awt.Color(0, 255, 0));
+        btnTambahData.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        btnTambahData.setForeground(new java.awt.Color(0, 0, 0));
+        btnTambahData.setText("Tambah Data");
+        btnTambahData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahDataActionPerformed(evt);
+            }
+        });
+
+        labNamaBarang1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labNamaBarang1.setForeground(new java.awt.Color(255, 255, 255));
+        labNamaBarang1.setText("Nama Barang");
+
+        txNamaBarang1.setBackground(new java.awt.Color(255, 255, 255));
+        txNamaBarang1.setForeground(new java.awt.Color(0, 0, 0));
+
+        labHargaPokok1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labHargaPokok1.setForeground(new java.awt.Color(255, 255, 255));
+        labHargaPokok1.setText("Harga Pokok");
+
+        txHargaPokok1.setBackground(new java.awt.Color(255, 255, 255));
+        txHargaPokok1.setForeground(new java.awt.Color(0, 0, 0));
+
+        labHargaJual1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labHargaJual1.setForeground(new java.awt.Color(255, 255, 255));
+        labHargaJual1.setText("Harga Jual");
+
+        txHargaJual1.setBackground(new java.awt.Color(255, 255, 255));
+        txHargaJual1.setForeground(new java.awt.Color(0, 0, 0));
+
+        labStok1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labStok1.setForeground(new java.awt.Color(255, 255, 255));
+        labStok1.setText("Stok");
+
+        txStok1.setBackground(new java.awt.Color(255, 255, 255));
+        txStok1.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel8.setFont(new java.awt.Font("Rockwell", 1, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(246, 182, 112));
+        jLabel8.setText("Data Barang");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labNamaBarang1)
+                                    .addComponent(labHargaPokok1)
+                                    .addComponent(labHargaJual1)
+                                    .addComponent(labStok1))
+                                .addGap(146, 146, 146)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txStok1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txHargaJual1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txHargaPokok1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txNamaBarang1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(btnTambahData)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnClear1)))
+                .addContainerGap(389, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(38, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(labNamaBarang1))
+                    .addComponent(txNamaBarang1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txHargaPokok1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labHargaPokok1))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labHargaJual1)
+                    .addComponent(txHargaJual1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txStok1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labStok1))
+                .addGap(70, 70, 70)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClear1)
+                    .addComponent(btnTambahData))
+                .addGap(185, 185, 185))
+        );
+
+        jTabbedPane1.addTab("Tambah Data", jPanel2);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, -1));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void tbBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBarangMouseClicked
+        // TODO add your handling code here:
+        int index = tbBarang.rowAtPoint(evt.getPoint());
+        if (evt.getClickCount() == 2) {
+            
+            cbIDBarang.setSelectedItem(tbBarang.getValueAt(index, 0).toString());
+            txNamaBarang.setText(tbBarang.getValueAt(index, 1).toString());
+            txHargaJual.setText(tbBarang.getValueAt(index, 2).toString());
+            txHargaPokok.setText(tbBarang.getValueAt(index, 3).toString());
+            txStok.setText(tbBarang.getValueAt(index, 4).toString());
+        }
+    }//GEN-LAST:event_tbBarangMouseClicked
+    
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+        showTabel();
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void btnTambahDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahDataActionPerformed
+        // TODO add your handling code here:
+        try {
+            conn = Koneksi.getKoneksi();
+            
+            CallableStatement call = conn.prepareCall("{call INS_BARANG(?,?,?,?)}");
+            call.setString(1, txNamaBarang1.getText());
+            call.setInt(2, Integer.parseInt(txHargaPokok1.getText()));
+            call.setInt(3, Integer.parseInt(txHargaJual1.getText()));
+            call.setInt(4, Integer.parseInt(txStok1.getText()));
+            call.execute();
+            
+//            SQL = "INSERT INTO barang (id_barang, nama_barang, hrg_pokok, hrg_jual, stok) VALUES ("
+//            + " gen_id('barang'), "
+//            + "'" + txNamaBarang1.getText() + "',"
+//            + txHargaPokok1.getText() + ","
+//            + txHargaJual1.getText() + ","
+//            + txStok1.getText() + ")";
+//            cmd = conn.createStatement();
+//            cmd.executeUpdate(SQL);
+            JOptionPane.showMessageDialog(this, "Success");
+
+            clear();
+            showTabel();
+            loadIDBarang();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnTambahDataActionPerformed
+
+    private void clear() {
+        cbIDBarang.setSelectedIndex(0);
+        txNamaBarang.setText("");
+        txHargaPokok.setText("");
+        txHargaJual.setText("");
+        txStok.setText("");
+        
+        txNamaBarang1.setText("");
+        txHargaPokok1.setText("");
+        txHargaJual1.setText("");
+        txStok1.setText("");
+    }
+    
+    private void btnClear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear1ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnClear1ActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        try {
+            CallableStatement call1 = conn.prepareCall("{call UPD_BARANG(?,?,?)}");
+            call1.setString(1, "nama");
+            call1.setString(2, cbIDBarang.getSelectedItem().toString());
+            call1.setString(3, txNamaBarang.getText());
+            call1.execute();
+            
+            CallableStatement call2 = conn.prepareCall("{call UPD_BARANG(?,?,?)}");
+            call2.setString(1, "hpokok");
+            call2.setString(2, cbIDBarang.getSelectedItem().toString());
+            call2.setString(3, txHargaPokok.getText());
+            call2.execute();
+            
+            CallableStatement call3 = conn.prepareCall("{call UPD_BARANG(?,?,?)}");
+            call3.setString(1, "hjual");
+            call3.setString(2, cbIDBarang.getSelectedItem().toString());
+            call3.setString(3, txHargaJual.getText());
+            call3.execute();
+            
+            CallableStatement call4 = conn.prepareCall("{call UPD_BARANG(?,?,?)}");
+            call4.setString(1, "stok");
+            call4.setString(2, cbIDBarang.getSelectedItem().toString());
+            call4.setString(3, txStok.getText());
+            call4.execute();
+            
+//            SQL = "UPDATE barang SET "
+//                    + "nama_barang = " + "'" + txNamaBarang.getText() + "',"
+//                    + "hrg_pokok = " + txHargaPokok.getText() + ","
+//                    + "hrg_jual = " + txHargaJual.getText() + ","
+//                    + "stok = " + txStok.getText()
+//                    + "WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "'";
+//            cmd = conn.createStatement();
+//            cmd.executeUpdate(SQL);
+            JOptionPane.showMessageDialog(this, "Success");
+            showTabel();
+            
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(this, "Failed: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            int jawab = JOptionPane.showConfirmDialog(this, "Silakan Konfirmasi?");
+            
+            switch(jawab){
+                case JOptionPane.YES_OPTION:
+                    CallableStatement call1 = conn.prepareCall("{call DEL_BARANG(?)}");
+                    call1.setString(1, cbIDBarang.getSelectedItem().toString());
+                    call1.execute();
+                    
+//                    SQL = "DELETE barang WHERE id_barang = '" + cbIDBarang.getSelectedItem().toString() + "'";
+//                    cmd = conn.createStatement();
+//                    cmd.executeUpdate(SQL);
+                    
+                    JOptionPane.showMessageDialog(this, "Success");
+                    showTabel();
+                    loadIDBarang();
+                    clear();
+                    break;
+                    
+                case JOptionPane.NO_OPTION:
+                    break;
+                    
+                case JOptionPane.CANCEL_OPTION:
+                    break;
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void cbIDBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbIDBarangActionPerformed
+        // TODO add your handling code here:
+        txNamaBarang.setText(cekBarang(1));
+        txHargaPokok.setText(cekBarang(2));
+        txHargaJual.setText(cekBarang(3));
+        txStok.setText(cekBarang(4));
+    }//GEN-LAST:event_cbIDBarangActionPerformed
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        // TODO add your handling code here:
+        showTabel();
+    }//GEN-LAST:event_formInternalFrameActivated
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnClear1;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnTambahData;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cbIDBarang;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel labHargaJual;
+    private javax.swing.JLabel labHargaJual1;
+    private javax.swing.JLabel labHargaPokok;
+    private javax.swing.JLabel labHargaPokok1;
+    private javax.swing.JLabel labIDBarang;
+    private javax.swing.JLabel labNamaBarang;
+    private javax.swing.JLabel labNamaBarang1;
+    private javax.swing.JLabel labStok;
+    private javax.swing.JLabel labStok1;
+    private javax.swing.JTable tbBarang;
+    private javax.swing.JTextField txHargaJual;
+    private javax.swing.JTextField txHargaJual1;
+    private javax.swing.JTextField txHargaPokok;
+    private javax.swing.JTextField txHargaPokok1;
+    private javax.swing.JTextField txNamaBarang;
+    private javax.swing.JTextField txNamaBarang1;
+    private javax.swing.JTextField txStok;
+    private javax.swing.JTextField txStok1;
+    // End of variables declaration//GEN-END:variables
+}
