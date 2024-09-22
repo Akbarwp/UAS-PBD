@@ -38,7 +38,7 @@ Follow the steps below to clone and run the project in your local environment:
 5. Configure the connection to the Oracle Database:
     - Add the connection configuration in the `Koneksi.java` file.
 
-6. Run the application using your IDE.
+6. Run the application using your IDE in the `MenuUtama.java` file.
 
 ## Database Setup
 
